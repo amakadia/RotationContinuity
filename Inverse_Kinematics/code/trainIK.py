@@ -240,7 +240,8 @@ def train(dances_lst, param):
 
 param=param.Parameters()
 
-param.read_config("../training/test0202_ortho6d/test0202_ortho6d.config")
+#param.read_config("../training/test0202_ortho6d/test0202_ortho6d.config")
+param.read_config("../training/test_svd/test_svd.config")
 
 if not os.path.exists(param.write_weight_folder):
     os.makedirs(param.write_weight_folder)

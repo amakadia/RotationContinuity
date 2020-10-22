@@ -212,12 +212,13 @@ print ("Loaded "+str(len(dance_lst)) + " dances")
 
 
 weight_folder= "../training/"
-model_name_lst = [ ("test0202_ortho6d","ortho6d"),
-                   ("test0204_ortho5d","ortho5d"),
-                   ("test0201_quat","Quaternion"),
-                   ("test0205_axisAngle","AxisAngle"),
-                   ("test0203_euler","euler"),
-                   ("test0206_mat","rmat")]
+# model_name_lst = [ ("test0202_ortho6d","ortho6d"),
+#                    ("test0204_ortho5d","ortho5d"),
+#                    ("test0201_quat","Quaternion"),
+#                    ("test0205_axisAngle","AxisAngle"),
+#                    ("test0203_euler","euler"),
+#                    ("test0206_mat","rmat")]
+model_name_lst = [ ("test_svd","svd")]
 
 iteration=1960000
 

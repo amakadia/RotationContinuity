@@ -33,6 +33,9 @@ class Model(nn.Module):
             self.out_channel = 3
         elif (out_rotation_mode  == "rmat"):
             self.out_channel = 9
+        elif(self.out_rotation_mode=="svd"):
+            self.out_channel = 9
+
             
         #if(self.hip_5d_rotation==True):
         #    self.out_channel = 5+(joint_num-1)*3
@@ -97,6 +100,11 @@ class Model(nn.Module):
         if(self.out_rotation_mode == "Quaternion"):
             out_r = self.mlp(in_seq.view(batch,-1)) #batch*(joint_num*4)
             out_rotation_matrices = tools.compute_rotation_matrix_from_quaternion(out_r.view(-1, self.out_channel))#(batch*joint_num)*3*3
+        elif (self.out_rotation_mode == "svd"):
+            out_r = self.mlp(in_seq.view(batch,-1)) #batch*(joint_num*9)
+            out_r = out_r.view(-1, self.out_channel)
+            # In this experiment we found it faster to force svd on cpu.
+            out_rotation_matrices = tools.compute_rotation_matrix_with_svd(out_r.cpu()).cuda()
         elif (self.out_rotation_mode == "ortho6d"):
             out_r = self.mlp(in_seq.view(batch,-1)) #batch*(joint_num*6)
             out_rotation_matrices = tools.compute_rotation_matrix_from_ortho6d(out_r.view(-1, self.out_channel))

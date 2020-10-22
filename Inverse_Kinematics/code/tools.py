@@ -77,6 +77,19 @@ def cross_product( u, v):
     return out
         
     
+# Map [batch, 9] inputs to [batch, 3, 3] rotation matrices using SVD orthogonalization.
+def compute_rotation_matrix_with_svd(poses):
+  poses_mat3x3 = poses.view(-1, 3, 3)
+  u, s, v = torch.svd(poses_mat3x3)
+  vt = torch.transpose(v, 1, 2)
+  det = det_b3x3(torch.matmul(u, vt))
+  det = det.view(-1, 1, 1)
+  # vt[:, -1:, :] = vt[:, -1:, :] * det
+  vt = torch.cat((vt[:, :2, :], vt[:, -1:, :] * det), 1)
+  r = torch.matmul(u, vt)
+  return r
+
+
 #poses batch*6
 #poses
 def compute_rotation_matrix_from_ortho6d(poses):
